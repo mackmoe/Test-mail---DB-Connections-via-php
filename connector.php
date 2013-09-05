@@ -1,4 +1,3 @@
-<?php session_start(); ?>
 <!-- 
 Name: connector.php
 Data Created: 07/23/2013
@@ -8,7 +7,7 @@ Description: This script was written to test simple issues with a website's abil
 from the server(s) it lives on. Please feel free to use this script in any way you'd like, you don't have to ask! You may also re-use this in 
 anyway you'd like however, please give credit where credit is due. 
 Special thanks to Gene and Kenny, if it wern't for them, this script would never have been made!
-How to use script: Just upload the script to any web facing direcotry (content should do) then in a browser, go to "domain.com/cs-connector/connector.php
+How to use script: Just upload the script to any web facing direcotry (content should do)
 Notes: Use a captcha for mail and also use mysqli::real_escape_string for querries before they are sent
 -->
 <!DOCTYPE html>
@@ -21,114 +20,6 @@ Notes: Use a captcha for mail and also use mysqli::real_escape_string for querri
 
 	<h2>E-Mail & Database Connectivity Troubleshooting</h2>
 	
-<?php
-	
-
-//	echo $_POST['host'].$_POST['username'].$_POST['password']."</br>";
-		require_once "Mail.php";
-                include_once './securimage/securimage.php';
-		$securimage = new Securimage();
-	switch ($_POST['form']) 
-{
-		// This case is for smtp auth... thank goodness for Gene!!
-		case 'mailformsmtp':
-	
-			$from = "Cloud Sites Support <support@supportrocks.dev>";
-                        $to = $_POST['recipient'];
-                        $subject = "PHP mail test (using SMTP Authentication)";
-                        $body = "If you are reading this message, sending mail from your site works reliably!";
-                        $host = $_POST['host'];
-                        $username = $_POST['username'];
-                        $password = $_POST['password'];
-                        $headers = array ('From' => $from,
-                          'To' => $to,
-                          'Subject' => $subject);
-                        $smtp = Mail::factory('smtp',
-                          array ('host' => $host,
-                            'auth' => true,
-                            'username' => $username,
-                            'password' => $password));
-			// Checking for humans... which should handle the error so that the form processor doesn't continue
-			if ($securimage->check($_POST['captcha_code']) == false) {
-			  echo "The security code entered was incorrect.<br /><br />";
-			  echo "Please go <a href='javascript:history.go(-1)'>back</a> and try again.";
-			  exit;
-}
-			$mail = $smtp->send($to, $headers, $body);
- 			if (PEAR::isError($mail)) {
-			  echo("<p>" . $mail->getMessage() . "</p>");
-			} else {
-			  echo("<p>Message successfully sent!</p>");
-}
-			break;
-    	
-
-		case 'mailfromopenrelay':
-			// PHP.net aint great but it got me this far...	
-			$message = "Sent to you from Cloud Sites Support - via mail relays using the php mail function. It may get there a bit late. If not, good but if so please use smtp_auth in your scripts to send mail reliably.";
-			$message = wordwrap($message, 70, "\r\n");
-			// Checking for humans... which should handle the error so that the form processor doesn't continue
-			if ($securimage->check($_POST['captcha_code2']) == false) {
-                          echo "The security code entered was incorrect.<br /><br />";
-                          echo "Please go <a href='javascript:history.go(-1)'>back</a> and try again.";
-                          exit;
-}
-			mail($_POST["sendmailto"],'using open mail relays', $message);
-			$relaymsg = 'Message sent ...now we wait';
-			echo $relaymsg;
-			break;
-    	
-		
-		case 'mysqlconnectform':
-		
-			// I used used some of the following code from php.net for this one... and MOST from Kenny's test script here
-			if ($_POST['mysql_host'] == '') die('Hostname Required');
-	                if ($_POST['mysql_user'] == '') die('Username Required');
-        	        if ($_POST['mysql_password'] == '') die('Password Required');
-			$link = mysql_connect($_POST['mysql_host'],$_POST['mysql_user'],$_POST['mysql_password'],$_POST['mysql_dbanme']) or die ('Could not connect: ' . mysql_error());
-			$results = mysql_query('show databases;');
-			$mysqlresponse =  "Successfully connected to your database. The list of accessable databases shown below: </br><ul>";
-			mysql_close($link); 
-        		break;  
-    		
-		
-		case 'mssqlconnectform':
-	
-			// Found the proper connection string w/inst on the wiki comment posted by Daniel Kinkade. The rest is from lady rainicorn and BMO!
-			if ($_POST['mssql_dbname'] == '') die('Database Name Required');
-			if ($_POST['mssql_host'] == '') die('Hostname Required');
-			if ($_POST['mssql_user'] == '') die('Username Required');
-			if ($_POST['mssql_password'] == '') die('Password Required');
-			// Connect to MSSQL with a slightly modded line for mssql adaptability
-			$sql_link = mssql_connect($_POST['mssql_host'], $_POST['mssql_user'], $_POST['mssql_password']) or die ('Could not connect: ' . mssql_get_last_message());
-			$mssqlresponse = "Successfully connected to your database. Showing results for the executed sql query: </br><ul>";
-			if (!$sql_link || !mssql_select_db($_POST['mssql_dbname'], $sql_link)) 
-			{
-			    die('Unable to connect or select database!');
-			}
-			// Do a simple query, select the version of 
-			// MSSQL and print it.
-			$version = mssql_query('SELECT @@VERSION');
-			$row = mssql_fetch_array($version); 
-			// Clean up
-			mssql_free_result($version);
-			break;
-	
-
-		/*case 'mssqlodbcform':
-			// This is so irratating... canit figure our the $tring :| 
-			if ($_POST['odbc_dbname'] == '') die('Database Name Required');
-                        if ($_POST['odbc_host'] == '') die('Hostname Required');
-                        if ($_POST['odbc_user'] == '') die('Username Required');
-                        if ($_POST['odbc_password'] == '') die('Password Required');
-                        // Connect to MSSQL with a slightly modded line for mssql adaptability
-                        $odbc_link = odbc_connect($_POST['odbc_host'], $_POST['odbc_user'], $_POST['odbc_password']) or die ('Could not connect: ' . odbc_errormsg());
-        		echo "this is for odbc_connect";
-			break;*/
-        		
-}
-?>
-
 <table border="1" style="width:200px;">
         <tr>
                 <td>Send Mail (smtp auth)</td>
@@ -175,19 +66,8 @@ Notes: Use a captcha for mail and also use mysqli::real_escape_string for querri
      
 
 <table border="1" style="width:200px;">
-		<?php echo $mysqlresponse, $db['Database'];?>
-		<?php if (isset ($results)) 
-			{
-				while ($db = mysql_fetch_assoc($results)) 
-				{
-                        		print '<li>'.$db['Database'].'</li>';
-				}
-                        	print '</ul>';
-			}
-?>
-		<! --This for the mssql sql result-->
-		<?php echo $mssqlresponse . $row[0]; ?>
-	<tr>
+						<! --This for the mssql sql result-->
+			<tr>
 		<td>MySQL (mysql_connect)</td>
 		<td>MsSQL (mssql_connect)</td>
 		<!--  <td>MsSQL (odbc_connect)</td> *still needs some work*-->
@@ -244,4 +124,9 @@ Notes: Use a captcha for mail and also use mysqli::real_escape_string for querri
         </form>
         </td> -->
 </table>
+	<center>
+			<form method="get" action="connector.php"> 
+		<input type="submit" name="daisycutter" value="Delete This Script">
+		</form>
+	</center>
 </body>
