@@ -66,7 +66,7 @@ Notes: Use a captcha for mail and also use mysqli::real_escape_string for querri
 		case 'mailfromopenrelay':
 			// PHP.net aint great but it got me this far...
 			$message = "Sent to you from Cloud Sites Support - via mail relays using the php mail function. It may get there a bit late. If not, good but if so please use smtp_auth in your scripts to send mail reliably.";
-			$headders = 'From: Cloud Sites Support <support@supportrocks.dev>' . "\r\n\" 'X-Mailer: PHP/' . phpversion();
+			$message = wordwrap($message, 70, "\r\n");
 			// Checking for humans... which should handle the error so that the form processor doesn't continue
 			if ($securimage->check($_POST['captcha_code2']) == false) {
                           echo "The security code entered was incorrect.<br /><br />";
