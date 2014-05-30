@@ -2,7 +2,7 @@
 <!--
 Name: connector.php
 Data Created: 07/23/2013
-Modify Date: (none)
+Modify Date: 05/30/2014
 Creater: Mo Nash
 Description: This script was written to test simple issues with a website's ability to connect to databases and it can also test mail functionality
 from the server(s) it lives on. Please feel free to use this script in any way you'd like, you don't have to ask! You may also re-use this in
@@ -53,9 +53,9 @@ Notes: Use a captcha for mail and also use mysqli::real_escape_string for querri
                 } else {
                     echo("<p>Message successfully sent!</p>");
                 }
-    	        break;
+                break;
 
-    		case 'mailfromopenrelay':
+            case 'mailfromopenrelay':
                 // PHP.net aint great but it got me this far...
                 $message = "Sent to you from Cloud Sites Support - via mail relays using the php mail function. It may get there a bit late. If not, good but if so please use smtp_auth in your scripts to send mail reliably.";
                 $message = wordwrap($message, 70, "\r\n");
@@ -65,10 +65,10 @@ Notes: Use a captcha for mail and also use mysqli::real_escape_string for querri
                     echo "Please go <a href='javascript:history.go(-1)'>back</a> and try again.";
                     exit;
                 }
-    			mail($_POST["sendmailto"],'using open mail relays', $message, $headders);
-    			$relaymsg = 'Message sent ...now we wait';
-    			echo $relaymsg;
-    			break;
+                mail($_POST["sendmailto"],'using open mail relays', $message, $headders);
+                $relaymsg = 'Message sent ...now we wait';
+                echo $relaymsg;
+                break;
 
             case 'mysqlconnectform':
                 // I used used some of the following code from php.net for this one... and MOST from Kenny's test script here
@@ -144,7 +144,7 @@ Notes: Use a captcha for mail and also use mysqli::real_escape_string for querri
 
             <input type="submit" value="Submit" />
 
-    		<p>Image is case sensitive! Input the captcha first then hit submit</p>
+            <p>Image is case sensitive! Input the captcha first then hit submit</p>
             <img id="captcha2" src="./securimage/securimage_show.php" alt="CAPTCHA Image" />
             <input type="text" name="captcha_code2" size="10" maxlength="6" />
             <a href="#" onclick="document.getElementById('captcha2').src = './securimage/securimage_show.php?' + Math.random(); return false">[ Different Image ]</a>
@@ -223,7 +223,7 @@ Notes: Use a captcha for mail and also use mysqli::real_escape_string for querri
             if(isset($_POST['daisycutter'])) { 
                 echo "It's gone... refresh the page" . shell_exec('rm -rf ../cs-connector'); 
             } 
-        ?>	
+        ?>
       </center>
   </body>
 </html>
